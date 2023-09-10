@@ -11,6 +11,7 @@ func main() {
 	if err != nil {
 		log.Fatal("unable to load environment variables")
 	}
+	
 	a := app.App{}
 
 	a.SetUpDB(cfg.Db_URL)

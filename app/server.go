@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"log"
+	"simple-crud-app/app/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -21,6 +22,10 @@ func (a *App) SetUpDB(dbUrl string) {
 	}
 
 	fmt.Println("🚀--<<Successfully connected to database>>--🚀")
+
+	// Migrate person data structure to database
+	db.AutoMigrate(&models.Person{})
+	fmt.Println("🚀--<<Successfully migrated Person object to database>>--🚀")
 
 	a.DB = db
 }
