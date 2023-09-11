@@ -45,15 +45,10 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": "Person Created!"})
 	})
 
-	a.Gin.GET("/api/:name", func(ctx *gin.Context) {
+	a.Gin.GET("/api", func(ctx *gin.Context) {
 		var p models.Person
 
-		// if err := ctx.ShouldBindQuery(&p); err != nil {
-		// 	ctx.AbortWithError(http.StatusBadRequest, err)
-		// 	return
-		// }
-
-		if err := a.DB.Where("name = ?", ctx.Param("name")).First(&p).Error; err != nil {
+		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{
 				"msg": "ERROR, Person NOT FOUND",
 				"error": err.Error()},	
@@ -64,10 +59,10 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	a.Gin.PUT("/api/:name", func(ctx *gin.Context) {
+	a.Gin.PUT("/api", func(ctx *gin.Context) {
 		var p models.Person
 
-		if err := a.DB.Where("name = ?", ctx.Param("name")).First(&p).Error; err != nil {
+		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -86,10 +81,10 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	a.Gin.DELETE("/api/:name", func(ctx *gin.Context) {
+	a.Gin.DELETE("/api/", func(ctx *gin.Context) {
 		var p models.Person
 
-		if err := a.DB.Where("name = ?", ctx.Param("name")).First(&p).Error; err != nil {
+		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
