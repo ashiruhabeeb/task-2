@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"simple-crud-app/app/models"
+	"simple-crud-app/api/models"
 
 	"github.com/go-playground/validator/v10"
 )
