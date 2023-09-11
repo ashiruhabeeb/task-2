@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 	"simple-crud-app/app/models"
+	"simple-crud-app/utils"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -27,6 +28,13 @@ func (a *App) Router() {
 			UpdatedAt: time.Time{},
 			DeletedAt: gorm.DeletedAt{},
 		}
+
+		err := utils.InputValidator(p)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		
 		
 		if err := a.DB.Create(&p).Error; err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err})
