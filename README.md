@@ -73,3 +73,6 @@ This file essentially serves as the entry point for api application. Here the AP
 
   - README.md file
 This file basically describes the composition and manner of functionality of this application.
+
+  - E-Rimage.png
+This contains the diagramatic representation of the person entity data structure, showing its field collection id, name, createdat, updatedat and deletedat fields. 
