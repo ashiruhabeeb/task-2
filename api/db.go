@@ -1,9 +1,9 @@
-package app
+package api
 
 import (
 	"fmt"
 	"log"
-	"simple-crud-app/app/models"
+	"simple-crud-app/api/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

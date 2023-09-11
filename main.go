@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"simple-crud-app/app"
+	"simple-crud-app/api"
 	"simple-crud-app/config"
 )
 
@@ -12,7 +12,7 @@ func main() {
 		log.Fatal("unable to load environment variables")
 	}
 	
-	a := app.App{}
+	a := api.App{}
 
 	a.SetUpDB(cfg.Db_URL)
 

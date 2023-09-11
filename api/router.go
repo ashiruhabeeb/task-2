@@ -1,8 +1,8 @@
-package app
+package api
 
 import (
 	"net/http"
-	"simple-crud-app/app/models"
+	"simple-crud-app/api/models"
 	"simple-crud-app/utils"
 	"time"
 
