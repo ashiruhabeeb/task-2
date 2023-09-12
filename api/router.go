@@ -65,16 +65,30 @@ func (a *App) Router() {
 			return
 		}
 
-		var _p models.Person
-		_p.Name = ctx.Query("name")
+		_p := &models.Payload{
+			Name:      ctx.Query("name"),
+			UpdatedAt: time.Now(),
+		}
 
 		if err := ctx.ShouldBindQuery(&_p); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		if err := a.DB.Model(&p).Updates(_p).Error; err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		err := utils.InputPayloadValidator(*_p)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		if err := a.DB.Model(&p).Updates(models.Person{
+			ID:        p.ID,
+			Name:      _p.Name,
+			CreatedAt: time.Time{},
+			UpdatedAt: time.Now(),
+			DeletedAt: gorm.DeletedAt{},
+		}).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"Response": _p})
