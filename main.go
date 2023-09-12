@@ -14,7 +14,7 @@ func main() {
 	
 	a := api.App{}
 
-	a.SetUpDB(cfg.External_URL)
+	a.SetUpDB(cfg.Internal_URL)
 
 	a.Router()
 
