@@ -16,17 +16,17 @@ func (a *App) Router() {
 	a.Gin.POST("/api/create", func(ctx *gin.Context) {
 		var p models.Person
 		name := ctx.Query("name")
-
-		if err := ctx.ShouldBindQuery(&p); err != nil {
-			ctx.AbortWithError(http.StatusBadRequest, err)
-			return
-		}
 		
 		p = models.Person{
 			Name:      name,
 			CreatedAt: time.Time{},
 			UpdatedAt: time.Time{},
 			DeletedAt: gorm.DeletedAt{},
+		}
+
+		if err := ctx.ShouldBindQuery(&p); err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, err)
+			return
 		}
 
 		err := utils.InputValidator(p)
