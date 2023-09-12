@@ -60,38 +60,32 @@ func (a *App) Router() {
 	a.Gin.PUT("/api/udt", func(ctx *gin.Context) {
 		var p models.Person
 
-		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
+		if err := a.DB.Find(&p, "name = ?", ctx.Query("name")).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
 
-		_p := &models.Payload{
-			Name:      ctx.Query("name"),
-			UpdatedAt: time.Now(),
-		}
+		var updatePersonData models.Payload
 
-		if err := ctx.ShouldBindQuery(&_p); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		updatePersonData.Name = ctx.Query("newName")
+
+		if err := ctx.ShouldBindQuery(&updatePersonData); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": true,
+				"msg": err.Error(),
+			})
 			return
 		}
 
-		err := utils.InputPayloadValidator(*_p)
+		err := utils.InputPayloadValidator(updatePersonData)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		if err := a.DB.Model(&p).Updates(models.Person{
-			ID:        p.ID,
-			Name:      _p.Name,
-			CreatedAt: time.Time{},
-			UpdatedAt: time.Now(),
-			DeletedAt: gorm.DeletedAt{},
-		}).Error; err != nil {
-				ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
+		a.DB.Save(&updatePersonData)
 
-		ctx.JSON(http.StatusOK, gin.H{"Response": _p})
+		ctx.JSON(http.StatusOK, gin.H{"Response": updatePersonData})
 	})
 
 	a.Gin.DELETE("/api/del", func(ctx *gin.Context) {
