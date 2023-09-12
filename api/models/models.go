@@ -16,5 +16,4 @@ type Person struct {
 
 type Payload struct {
 	Name		string		`json:"name" gorm:"unique" validate:"required,min=2"`
-	UpdatedAt	time.Time	`gorm:"defualt:CURRENT_TIMESTAMP" json:"updated_at"`
 }
