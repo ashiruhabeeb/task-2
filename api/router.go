@@ -13,7 +13,7 @@ import (
 func (a *App) Router() {
 	a.Gin = gin.Default()
 
-	a.Gin.POST("/api", func(ctx *gin.Context) {
+	a.Gin.POST("/api/create", func(ctx *gin.Context) {
 		var p models.Person
 		name := ctx.Query("name")
 
@@ -35,17 +35,15 @@ func (a *App) Router() {
 			return
 		}
 		
-		
 		if err := a.DB.Create(&p).Error; err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err})
 			ctx.Abort()
 			return
 		}
-
 		ctx.JSON(http.StatusOK, gin.H{"Response": "Person Created!"})
 	})
 
-	a.Gin.GET("/api", func(ctx *gin.Context) {
+	a.Gin.GET("/api/get", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
@@ -59,7 +57,7 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	a.Gin.PUT("/api", func(ctx *gin.Context) {
+	a.Gin.PUT("/api/udt", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
@@ -68,20 +66,21 @@ func (a *App) Router() {
 		}
 
 		var _p models.Person
+		_p.Name = ctx.Query("name")
 
-		if err := ctx.ShouldBindJSON(&_p); err != nil {
+		if err := ctx.ShouldBindQuery(&_p); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		if err := a.DB.Model(&p).Updates(models.Person{Name: _p.Name}).Error; err != nil {
+		if err := a.DB.Model(&p).Updates(_p).Error; err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	a.Gin.DELETE("/api/", func(ctx *gin.Context) {
+	a.Gin.DELETE("/api/del", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.Where("name = ?", ctx.Query("name")).First(&p).Error; err != nil {
