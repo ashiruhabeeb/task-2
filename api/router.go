@@ -57,6 +57,19 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
+	a.Gin.GET("/api/fetchall", func(ctx *gin.Context) {
+		var p []models.Person
+
+		a.DB.Find(&p)
+
+		if len(p) == 0 {
+			ctx.JSON(http.StatusNotFound, gin.H{"response": nil})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"status": true, "response": p})
+	})
+
 	a.Gin.PUT("/api/udt", func(ctx *gin.Context) {
 		var p models.Person
 
