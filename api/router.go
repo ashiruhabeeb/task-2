@@ -45,7 +45,7 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	r1.GET("/id", func(ctx *gin.Context) {
+	r1.GET("/", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.Where("id = ?", ctx.Query("id")).First(&p).Error; err != nil {
@@ -72,7 +72,7 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"status": true, "response": p})
 	})
 
-	r1.PUT("/id", func(ctx *gin.Context) {
+	r1.PUT("/", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.First(&p, "id = ?", ctx.Query("id")).Error; err != nil {
@@ -99,7 +99,7 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"Response": p})
 	})
 
-	r1.DELETE("/id", func(ctx *gin.Context) {
+	r1.DELETE("/", func(ctx *gin.Context) {
 		var p models.Person
 
 		if err := a.DB.Where("id = ?", ctx.Query("id")).First(&p).Error; err != nil {
