@@ -41,7 +41,7 @@ func (a *App) Router() {
 			ctx.Abort()
 			return
 		}
-		ctx.JSON(http.StatusOK, gin.H{"Response": p})
+		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
 	r1.GET("/", func(ctx *gin.Context) {
@@ -70,7 +70,7 @@ func (a *App) Router() {
 		// 	})
 		// }
 
-		ctx.JSON(http.StatusOK, gin.H{"Response": p})
+		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
 	r1.GET("", func(ctx *gin.Context) {
@@ -83,7 +83,7 @@ func (a *App) Router() {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"status": true, "response": p})
+		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
 	r1.PUT("/", func(ctx *gin.Context) {
@@ -125,7 +125,7 @@ func (a *App) Router() {
 
 		a.DB.Save(&p)
 
-		ctx.JSON(http.StatusOK, gin.H{"Response": p})
+		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
 	r1.DELETE("/", func(ctx *gin.Context) {
@@ -156,6 +156,6 @@ func (a *App) Router() {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"Response": "Person Deleted"})
+		ctx.JSON(http.StatusOK, gin.H{"status": "Person Deleted"})
 	})
 }
