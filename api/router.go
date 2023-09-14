@@ -25,7 +25,7 @@ func (a *App) Router() {
 		}
 		
 		p = models.Person{
-			ID:		id,
+			ID:		id.String(),
 			Name:	name,
 		}
 
