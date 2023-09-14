@@ -1,7 +1,7 @@
 package models
 
 type Person struct {
-	ID		string	`gorm:"type:uuid;primary_key" json:"id"`
+	ID		string	`gorm:"type:uuid" json:"id"`
 	Name	string	`json:"name" gorm:"unique" validate:"required,min=2"`
 }
 

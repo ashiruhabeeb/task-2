@@ -14,7 +14,6 @@ func (a *App) SetUpDB(dbUrl string) {
 	if err != nil {
 		log.Fatal("Unable to connect to database", err)
 	}
-
 	fmt.Println("🚀--<<Successfully connected to database>>--🚀")
 
 	// Migrate person data structure to database
