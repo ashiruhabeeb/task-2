@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 	"simple-crud-app/api/models"
 	"simple-crud-app/utils"
@@ -19,13 +18,10 @@ func (a *App) Router() {
 		var p models.Person
 		name := ctx.Query("name")
 
-		id, err := uuid.NewUUID()
-		if err != nil {
-			log.Println(err)
-		}
+		id := uuid.NewString()
 		
 		p = models.Person{
-			ID:		id.String(),
+			ID:		id,
 			Name:	name,
 		}
 
@@ -34,7 +30,7 @@ func (a *App) Router() {
 			return
 		}
 
-		err = utils.InputValidator(p)
+		err := utils.InputValidator(p)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
