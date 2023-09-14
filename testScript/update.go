@@ -6,10 +6,10 @@ import (
   "io/ioutil"
 )
 
-func delete() {
+func update() {
 
-  url := "https://hng-internship-task2-gprm.onrender.com/api?id=940440d7-915c-4d37-9f21-c02d423796c3"
-  method := "DELETE"
+  url := "https://hng-internship-task2-gprm.onrender.com/api?id=940440d7-915c-4d37-9f21-c02d423796c3&name=Habeeb%20Ashiru"
+  method := "PUT"
 
   client := &http.Client {
   }
