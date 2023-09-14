@@ -1,13 +1,13 @@
 package api
 
 import (
+	"log"
 	"net/http"
 	"simple-crud-app/api/models"
 	"simple-crud-app/utils"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"github.com/google/uuid"
 )
 
 func (a *App) Router() {
@@ -18,12 +18,15 @@ func (a *App) Router() {
 	r1.POST("", func(ctx *gin.Context) {
 		var p models.Person
 		name := ctx.Query("name")
+
+		id, err := uuid.NewUUID()
+		if err != nil {
+			log.Println(err)
+		}
 		
 		p = models.Person{
-			Name:      name,
-			CreatedAt: time.Time{},
-			UpdatedAt: time.Time{},
-			DeletedAt: gorm.DeletedAt{},
+			ID:		id,
+			Name:	name,
 		}
 
 		if err := ctx.ShouldBindQuery(&p); err != nil {
@@ -31,7 +34,7 @@ func (a *App) Router() {
 			return
 		}
 
-		err := utils.InputValidator(p)
+		err = utils.InputValidator(p)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
