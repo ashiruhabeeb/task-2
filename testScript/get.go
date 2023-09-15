@@ -2,6 +2,7 @@ package main
 
 import (
   "fmt"
+  "strings"
   "net/http"
   "io/ioutil"
 )
@@ -11,9 +12,11 @@ func get() {
   url := "https://hng-internship-task2-gprm.onrender.com/api"
   method := "GET"
 
+  payload := strings.NewReader(``)
+
   client := &http.Client {
   }
-  req, err := http.NewRequest(method, url, nil)
+  req, err := http.NewRequest(method, url, payload)
 
   if err != nil {
     fmt.Println(err)
