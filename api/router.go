@@ -16,7 +16,7 @@ func (a *App) Router() {
 
 	r1.POST("", func(ctx *gin.Context) {
 		var p models.Person
-		name := ctx.Query("name")
+		name := ctx.Param("name")
 
 		id := uuid.NewString()
 		
@@ -25,7 +25,7 @@ func (a *App) Router() {
 			Name:	name,
 		}
 
-		if err := ctx.ShouldBindQuery(&p); err != nil {
+		if err := ctx.ShouldBindJSON(&p); err != nil {
 			ctx.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
@@ -44,10 +44,10 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
-	r1.GET("/", func(ctx *gin.Context) {
+	r1.GET("/:id", func(ctx *gin.Context) {
 		var p models.Person
 
-		if err := a.DB.Where("id = ?", ctx.Query("id")).First(&p).Error; err != nil {
+		if err := a.DB.Where("id = ?", ctx.Param("id")).First(&p).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{
 				"msg": "ERROR, Person not found",
 				"error": err.Error()},	
@@ -71,22 +71,22 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
-	r1.PUT("/", func(ctx *gin.Context) {
+	r1.PUT("/:id", func(ctx *gin.Context) {
 		var p models.Person
 		// person := ctx.Query("name")
 
-		if err := a.DB.First(&p, "id = ?", ctx.Query("id")).Error; err != nil {
+		if err := a.DB.First(&p, "id = ?", ctx.Param("id")).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
 
 		var updatePersonData models.Payload
 
-		updatePersonData.Name = ctx.Query("name")
+		updatePersonData.Name = ctx.Param("name")
 
 		p.Name = updatePersonData.Name
 
-		if err := ctx.ShouldBindQuery(&p); err != nil {
+		if err := ctx.ShouldBindJSON(&p); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": true,
 				"msg": 	 err.Error(),
@@ -99,10 +99,10 @@ func (a *App) Router() {
 		ctx.JSON(http.StatusOK, gin.H{"data": p})
 	})
 
-	r1.DELETE("/", func(ctx *gin.Context) {
+	r1.DELETE("/:id", func(ctx *gin.Context) {
 		var p models.Person
 
-		if err := a.DB.Where("id = ?", ctx.Query("id")).First(&p).Error; err != nil {
+		if err := a.DB.Where("id = ?", ctx.Param("id")).First(&p).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
