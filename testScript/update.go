@@ -2,23 +2,30 @@ package main
 
 import (
   "fmt"
+  "strings"
   "net/http"
   "io/ioutil"
 )
 
 func update() {
 
-  url := "https://hng-internship-task2-gprm.onrender.com/api?id=940440d7-915c-4d37-9f21-c02d423796c3&name=Habeeb%20Ashiru"
+  url := "https://hng-internship-task2-gprm.onrender.com/api/eb14793c-bcfe-4505-b557-14b4e5b210ea"
   method := "PUT"
+
+  payload := strings.NewReader(`{
+    "name": "Ibrahim Mahama"
+}`)
 
   client := &http.Client {
   }
-  req, err := http.NewRequest(method, url, nil)
+  req, err := http.NewRequest(method, url, payload)
 
   if err != nil {
     fmt.Println(err)
     return
   }
+  req.Header.Add("Content-Type", "application/json")
+
   res, err := client.Do(req)
   if err != nil {
     fmt.Println(err)

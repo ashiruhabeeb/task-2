@@ -2,18 +2,21 @@ package main
 
 import (
   "fmt"
+  "strings"
   "net/http"
   "io/ioutil"
 )
 
 func delete() {
 
-  url := "https://hng-internship-task2-gprm.onrender.com/api?id=940440d7-915c-4d37-9f21-c02d423796c3"
+  url := "https://hng-internship-task2-gprm.onrender.com/api/eb14793c-bcfe-4505-b557-14b4e5b210ea"
   method := "DELETE"
+
+  payload := strings.NewReader(``)
 
   client := &http.Client {
   }
-  req, err := http.NewRequest(method, url, nil)
+  req, err := http.NewRequest(method, url, payload)
 
   if err != nil {
     fmt.Println(err)

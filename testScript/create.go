@@ -2,23 +2,30 @@ package main
 
 import (
   "fmt"
+  "strings"
   "net/http"
   "io/ioutil"
 )
 
 func create() {
 
-  url := "https://hng-internship-task2-gprm.onrender.com/api?name=Ashiru%20Habeeb"
+  url := "https://hng-internship-task2-gprm.onrender.com/api"
   method := "POST"
+
+  payload := strings.NewReader(`{
+    "name": "Sayyu Dantata"
+}`)
 
   client := &http.Client {
   }
-  req, err := http.NewRequest(method, url, nil)
+  req, err := http.NewRequest(method, url, payload)
 
   if err != nil {
     fmt.Println(err)
     return
   }
+  req.Header.Add("Content-Type", "application/json")
+
   res, err := client.Do(req)
   if err != nil {
     fmt.Println(err)

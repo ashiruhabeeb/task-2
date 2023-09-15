@@ -8,7 +8,7 @@ import (
 
 func read() {
 
-  url := "https://hng-internship-task2-gprm.onrender.com/api/?id=e955af13-5d41-437b-b20f-ac924610d189"
+  url := "https://hng-internship-task2-gprm.onrender.com/api/e955af13-5d41-437b-b20f-ac924610d189"
   method := "GET"
 
   client := &http.Client {
